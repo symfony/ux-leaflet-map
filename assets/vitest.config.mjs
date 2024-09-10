@@ -1,5 +1,5 @@
 import { defineConfig, mergeConfig } from 'vitest/config';
-import configShared from '../../../../../../vitest.config.js'
+import configShared from '../../../../../../vitest.config.mjs'
 
 export default mergeConfig(
     configShared,
