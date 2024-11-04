@@ -1,8 +1,14 @@
 import AbstractMapController from '@symfony/ux-map';
-import type { Point, MarkerDefinition, PolygonDefinition } from '@symfony/ux-map';
+import type { Point, MarkerDefinition, PolygonDefinition, PolylineDefinition } from '@symfony/ux-map';
 import 'leaflet/dist/leaflet.min.css';
 import * as L from 'leaflet';
-import type { MapOptions as LeafletMapOptions, MarkerOptions, PopupOptions, PolygonOptions } from 'leaflet';
+import type {
+    MapOptions as LeafletMapOptions,
+    MarkerOptions,
+    PopupOptions,
+    PolylineOptions as PolygonOptions,
+    PolylineOptions,
+} from 'leaflet';
 
 type MapOptions = Pick<LeafletMapOptions, 'center' | 'zoom'> & {
     tileLayer: { url: string; attribution: string; options: Record<string, unknown> };
@@ -16,7 +22,9 @@ export default class extends AbstractMapController<
     PopupOptions,
     typeof L.Popup,
     PolygonOptions,
-    typeof L.Polygon
+    typeof L.Polygon,
+    PolylineOptions,
+    typeof L.Polyline
 > {
     connect(): void {
         L.Marker.prototype.options.icon = L.divIcon({
@@ -91,12 +99,43 @@ export default class extends AbstractMapController<
         return polygon;
     }
 
+    protected removePolygon(polygon: L.Polygon) {
+        polygon.remove();
+    }
+
+    protected doCreatePolyline(definition: PolylineDefinition): L.Polyline {
+        const { '@id': _id, points, title, infoWindow, rawOptions = {} } = definition;
+
+        const polyline = L.polyline(points, { ...rawOptions }).addTo(this.map);
+
+        if (title) {
+            polyline.bindPopup(title);
+        }
+
+        if (infoWindow) {
+            this.createInfoWindow({ definition: infoWindow, element: polyline });
+        }
+
+        return polyline;
+    }
+
+    protected removePolyline(polyline: L.Polyline): void {
+        polyline.remove();
+    }
+
     protected doCreateInfoWindow({
         definition,
         element,
     }:
-        | { definition: MarkerDefinition<typeof L.Marker, typeof L.Popup>; element: L.Marker }
-        | { definition: PolygonDefinition<typeof L.Polygon, typeof L.Popup>; element: L.Polygon }): L.Popup {
+        | {
+              definition: MarkerDefinition<typeof L.Marker, typeof L.Popup>['infoWindow'];
+              element: L.Marker;
+          }
+        | { definition: PolygonDefinition<typeof L.Polygon, typeof L.Popup>['infoWindow']; element: L.Polygon }
+        | {
+              definition: PolylineDefinition<typeof L.Polyline, typeof L.Popup>['infoWindow'];
+              element: L.Polyline;
+          }): L.Popup {
         const { headerContent, content, rawOptions = {}, ...otherOptions } = definition;
 
         element.bindPopup([headerContent, content].filter((x) => x).join('<br>'), { ...otherOptions, ...rawOptions });

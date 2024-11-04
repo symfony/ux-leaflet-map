@@ -46,6 +46,7 @@ describe('LeafletController', () => {
               data-symfony--ux-leaflet-map--map-options-value="{&quot;tileLayer&quot;:{&quot;url&quot;:&quot;https:\\/\\/tile.openstreetmap.org\\/{z}\\/{x}\\/{y}.png&quot;,&quot;attribution&quot;:&quot;\u00a9 &lt;a href=\\&quot;https:\\/\\/www.openstreetmap.org\\/copyright\\&quot;&gt;OpenStreetMap&lt;\\/a&gt;&quot;,&quot;options&quot;:[]},&quot;@provider&quot;:&quot;leaflet&quot;}" 
               data-symfony--ux-leaflet-map--map-markers-value="[]" 
               data-symfony--ux-leaflet-map--map-polygons-value="[]" 
+              data-symfony--ux-leaflet-map--map-polylines-value="[]" 
               style="height: 600px"
           ></div>
 
