@@ -73,7 +73,7 @@ export default class extends Controller
 
         // Use a custom icon for the marker
         const redIcon = L.icon({
-          // Note: instead of using an hardcoded URL, you can use the `extra` parameter from `new Marker()` (PHP) and access it here with `definition.extra`.
+          // Note: instead of using a hardcoded URL, you can use the `extra` parameter from `new Marker()` (PHP) and access it here with `definition.extra`.
           iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-red.png',
           shadowUrl: 'https://leafletjs.com/examples/custom-icons/leaf-shadow.png',
           iconSize: [38, 95], // size of the icon
