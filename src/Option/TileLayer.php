@@ -30,12 +30,27 @@ final readonly class TileLayer
     ) {
     }
 
+    /**
+     * @internal
+     */
+    public static function fromArray(array $array): self
+    {
+        return new self(
+            url: $array['url'],
+            attribution: $array['attribution'],
+            options: $array['options'],
+        );
+    }
+
+    /**
+     * @internal
+     */
     public function toArray(): array
     {
         return [
             'url' => $this->url,
             'attribution' => $this->attribution,
-            'options' => (object) $this->options,
+            'options' => $this->options,
         ];
     }
 }

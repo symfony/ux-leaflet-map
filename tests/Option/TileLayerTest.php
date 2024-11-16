@@ -26,13 +26,13 @@ class TileLayerTest extends TestCase
             ],
         );
 
-        $array = $tileLayer->toArray();
-
         self::assertSame([
             'url' => 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
             'attribution' => '© OpenStreetMap contributors',
-            'options' => $array['options'], // stdClass
-        ], $array);
-        self::assertSame(19, $array['options']->maxZoom);
+            'options' => [
+                'maxZoom' => 19,
+            ],
+        ], $tileLayer->toArray());
+        self::assertEquals(TileLayer::fromArray($tileLayer->toArray()), $tileLayer);
     }
 }

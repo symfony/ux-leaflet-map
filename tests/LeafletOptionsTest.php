@@ -21,15 +21,15 @@ class LeafletOptionsTest extends TestCase
     {
         $leafletOptions = new LeafletOptions();
 
-        $array = $leafletOptions->toArray();
-
         self::assertSame([
             'tileLayer' => [
                 'url' => 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                 'attribution' => '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-                'options' => $array['tileLayer']['options'], // stdClass
+                'options' => [],
             ],
-        ], $array);
+        ], $leafletOptions->toArray());
+
+        self::assertEquals($leafletOptions, LeafletOptions::fromArray($leafletOptions->toArray()));
     }
 
     public function testWithMaximumConfiguration(): void
@@ -47,18 +47,19 @@ class LeafletOptionsTest extends TestCase
             ),
         );
 
-        $array = $leafletOptions->toArray();
-
         self::assertSame([
             'tileLayer' => [
                 'url' => 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                 'attribution' => '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-                'options' => $array['tileLayer']['options'], // stdClass
+                'options' => [
+                    'maxZoom' => 19,
+                    'minZoom' => 1,
+                    'maxNativeZoom' => 18,
+                    'zoomOffset' => 0,
+                ],
             ],
-        ], $array);
-        self::assertSame(19, $array['tileLayer']['options']->maxZoom);
-        self::assertSame(1, $array['tileLayer']['options']->minZoom);
-        self::assertSame(18, $array['tileLayer']['options']->maxNativeZoom);
-        self::assertSame(0, $array['tileLayer']['options']->zoomOffset);
+        ], $leafletOptions->toArray());
+
+        self::assertEquals($leafletOptions, LeafletOptions::fromArray($leafletOptions->toArray()));
     }
 }

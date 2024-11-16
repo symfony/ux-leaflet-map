@@ -34,6 +34,19 @@ final class LeafletOptions implements MapOptionsInterface
         return $this;
     }
 
+    /**
+     * @internal
+     */
+    public static function fromArray(array $array): MapOptionsInterface
+    {
+        return new self(
+            tileLayer: TileLayer::fromArray($array['tileLayer']),
+        );
+    }
+
+    /**
+     * @internal
+     */
     public function toArray(): array
     {
         return [
