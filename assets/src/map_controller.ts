@@ -59,8 +59,8 @@ export default class extends AbstractMapController<
         return map;
     }
 
-    protected doCreateMarker(definition: MarkerDefinition): L.Marker {
-        const { position, title, infoWindow, extra, rawOptions = {}, ...otherOptions } = definition;
+    protected doCreateMarker(definition: MarkerDefinition<typeof L.Marker, typeof L.Popup>): L.Marker {
+        const { '@id': _id, position, title, infoWindow, extra, rawOptions = {}, ...otherOptions } = definition;
 
         const marker = L.marker(position, { title, ...otherOptions, ...rawOptions }).addTo(this.map);
 
@@ -71,8 +71,12 @@ export default class extends AbstractMapController<
         return marker;
     }
 
-    protected doCreatePolygon(definition: PolygonDefinition): L.Polygon {
-        const { points, title, infoWindow, rawOptions = {} } = definition;
+    protected removeMarker(marker: L.Marker): void {
+        marker.remove();
+    }
+
+    protected doCreatePolygon(definition: PolygonDefinition<typeof L.Polygon, typeof L.Popup>): L.Polygon {
+        const { '@id': _id, points, title, infoWindow, rawOptions = {} } = definition;
 
         const polygon = L.polygon(points, { ...rawOptions }).addTo(this.map);
 
@@ -90,10 +94,9 @@ export default class extends AbstractMapController<
     protected doCreateInfoWindow({
         definition,
         element,
-    }: {
-        definition: MarkerDefinition['infoWindow'] | PolygonDefinition['infoWindow'];
-        element: L.Marker | L.Polygon;
-    }): L.Popup {
+    }:
+        | { definition: MarkerDefinition<typeof L.Marker, typeof L.Popup>; element: L.Marker }
+        | { definition: PolygonDefinition<typeof L.Polygon, typeof L.Popup>; element: L.Polygon }): L.Popup {
         const { headerContent, content, rawOptions = {}, ...otherOptions } = definition;
 
         element.bindPopup([headerContent, content].filter((x) => x).join('<br>'), { ...otherOptions, ...rawOptions });
@@ -122,5 +125,17 @@ export default class extends AbstractMapController<
                 return [position.lat, position.lng];
             })
         );
+    }
+
+    public centerValueChanged(): void {
+        if (this.map) {
+            this.map.setView(this.centerValue, this.zoomValue);
+        }
+    }
+
+    public zoomValueChanged(): void {
+        if (this.map) {
+            this.map.setZoom(this.zoomValue);
+        }
     }
 }

@@ -18,12 +18,18 @@ export default class extends AbstractMapController<MapOptions, typeof L.Map, Mar
         zoom: number | null;
         options: MapOptions;
     }): L.Map;
-    protected doCreateMarker(definition: MarkerDefinition): L.Marker;
-    protected doCreatePolygon(definition: PolygonDefinition): L.Polygon;
+    protected doCreateMarker(definition: MarkerDefinition<typeof L.Marker, typeof L.Popup>): L.Marker;
+    protected removeMarker(marker: L.Marker): void;
+    protected doCreatePolygon(definition: PolygonDefinition<typeof L.Polygon, typeof L.Popup>): L.Polygon;
     protected doCreateInfoWindow({ definition, element, }: {
-        definition: MarkerDefinition['infoWindow'] | PolygonDefinition['infoWindow'];
-        element: L.Marker | L.Polygon;
+        definition: MarkerDefinition<typeof L.Marker, typeof L.Popup>;
+        element: L.Marker;
+    } | {
+        definition: PolygonDefinition<typeof L.Polygon, typeof L.Popup>;
+        element: L.Polygon;
     }): L.Popup;
     protected doFitBoundsToMarkers(): void;
+    centerValueChanged(): void;
+    zoomValueChanged(): void;
 }
 export {};
