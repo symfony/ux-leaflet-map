@@ -21,11 +21,17 @@ export default class extends AbstractMapController<MapOptions, L.Map, MarkerOpti
         zoom: number | null;
         options: MapOptions;
     }): L.Map;
-    protected doCreateMarker(definition: MarkerDefinition<MarkerOptions, PopupOptions>): L.Marker;
+    protected doCreateMarker({ definition }: {
+        definition: MarkerDefinition<MarkerOptions, PopupOptions>;
+    }): L.Marker;
     protected doRemoveMarker(marker: L.Marker): void;
-    protected doCreatePolygon(definition: PolygonDefinition<PolygonOptions, PopupOptions>): L.Polygon;
+    protected doCreatePolygon({ definition, }: {
+        definition: PolygonDefinition<PolygonOptions, PopupOptions>;
+    }): L.Polygon;
     protected doRemovePolygon(polygon: L.Polygon): void;
-    protected doCreatePolyline(definition: PolylineDefinition<PolylineOptions, PopupOptions>): L.Polyline;
+    protected doCreatePolyline({ definition, }: {
+        definition: PolylineDefinition<PolylineOptions, PopupOptions>;
+    }): L.Polyline;
     protected doRemovePolyline(polyline: L.Polyline): void;
     protected doCreateInfoWindow({ definition, element, }: {
         definition: InfoWindowWithoutPositionDefinition<PopupOptions>;

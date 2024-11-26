@@ -14,6 +14,7 @@ import type {
     PopupOptions,
     PolylineOptions as PolygonOptions,
     PolylineOptions,
+    LatLngBoundsExpression,
 } from 'leaflet';
 
 type MapOptions = Pick<LeafletMapOptions, 'center' | 'zoom'> & {
@@ -87,7 +88,7 @@ export default class extends AbstractMapController<
         return map;
     }
 
-    protected doCreateMarker(definition: MarkerDefinition<MarkerOptions, PopupOptions>): L.Marker {
+    protected doCreateMarker({ definition }: { definition: MarkerDefinition<MarkerOptions, PopupOptions> }): L.Marker {
         const { '@id': _id, position, title, infoWindow, extra, rawOptions = {}, ...otherOptions } = definition;
 
         const marker = L.marker(position, { title: title || undefined, ...otherOptions, ...rawOptions }).addTo(
@@ -105,7 +106,9 @@ export default class extends AbstractMapController<
         marker.remove();
     }
 
-    protected doCreatePolygon(definition: PolygonDefinition<PolygonOptions, PopupOptions>): L.Polygon {
+    protected doCreatePolygon({
+        definition,
+    }: { definition: PolygonDefinition<PolygonOptions, PopupOptions> }): L.Polygon {
         const { '@id': _id, points, title, infoWindow, rawOptions = {} } = definition;
 
         const polygon = L.polygon(points, { ...rawOptions }).addTo(this.map);
@@ -125,7 +128,9 @@ export default class extends AbstractMapController<
         polygon.remove();
     }
 
-    protected doCreatePolyline(definition: PolylineDefinition<PolylineOptions, PopupOptions>): L.Polyline {
+    protected doCreatePolyline({
+        definition,
+    }: { definition: PolylineDefinition<PolylineOptions, PopupOptions> }): L.Polyline {
         const { '@id': _id, points, title, infoWindow, rawOptions = {} } = definition;
 
         const polyline = L.polyline(points, { ...rawOptions }).addTo(this.map);
@@ -173,12 +178,11 @@ export default class extends AbstractMapController<
             return;
         }
 
-        this.map.fitBounds(
-            this.markers.map((marker: L.Marker) => {
-                const position = marker.getLatLng();
-
-                return [position.lat, position.lng];
-            })
-        );
+        const bounds: LatLngBoundsExpression = [];
+        this.markers.forEach((marker) => {
+            const position = marker.getLatLng();
+            bounds.push([position.lat, position.lng]);
+        });
+        this.map.fitBounds(bounds);
     }
 }
