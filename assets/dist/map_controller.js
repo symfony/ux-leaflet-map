@@ -17,7 +17,11 @@ class default_1 extends Controller {
         this.createMarker = this.createDrawingFactory('marker', this.markers, this.doCreateMarker.bind(this));
         this.createPolygon = this.createDrawingFactory('polygon', this.polygons, this.doCreatePolygon.bind(this));
         this.createPolyline = this.createDrawingFactory('polyline', this.polylines, this.doCreatePolyline.bind(this));
-        this.map = this.doCreateMap({ center: this.centerValue, zoom: this.zoomValue, options });
+        this.map = this.doCreateMap({
+            center: this.hasCenterValue ? this.centerValue : null,
+            zoom: this.hasZoomValue ? this.zoomValue : null,
+            options,
+        });
         this.markersValue.forEach((definition) => this.createMarker({ definition }));
         this.polygonsValue.forEach((definition) => this.createPolygon({ definition }));
         this.polylinesValue.forEach((definition) => this.createPolyline({ definition }));
@@ -112,12 +116,12 @@ class map_controller extends default_1 {
         super.connect();
     }
     centerValueChanged() {
-        if (this.map && this.centerValue && this.zoomValue) {
+        if (this.map && this.hasCenterValue && this.centerValue && this.hasZoomValue && this.zoomValue) {
             this.map.setView(this.centerValue, this.zoomValue);
         }
     }
     zoomValueChanged() {
-        if (this.map && this.zoomValue) {
+        if (this.map && this.hasZoomValue && this.zoomValue) {
             this.map.setZoom(this.zoomValue);
         }
     }
