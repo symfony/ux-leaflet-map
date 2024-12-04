@@ -1,8 +1,8 @@
 import AbstractMapController from '@symfony/ux-map';
-import type { Point, MarkerDefinition, PolygonDefinition, PolylineDefinition, InfoWindowWithoutPositionDefinition } from '@symfony/ux-map';
+import type { InfoWindowWithoutPositionDefinition, MarkerDefinition, Point, PolygonDefinition, PolylineDefinition } from '@symfony/ux-map';
 import 'leaflet/dist/leaflet.min.css';
 import * as L from 'leaflet';
-import type { MapOptions as LeafletMapOptions, MarkerOptions, PopupOptions, PolylineOptions as PolygonOptions, PolylineOptions } from 'leaflet';
+import type { MapOptions as LeafletMapOptions, MarkerOptions, PolylineOptions as PolygonOptions, PolylineOptions, PopupOptions } from 'leaflet';
 type MapOptions = Pick<LeafletMapOptions, 'center' | 'zoom'> & {
     tileLayer: {
         url: string;
