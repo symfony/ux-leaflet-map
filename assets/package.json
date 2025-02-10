@@ -39,6 +39,7 @@
     },
     "devDependencies": {
         "@hotwired/stimulus": "^3.0.0",
+        "@symfony/ux-map": "workspace:*",
         "@types/leaflet": "^1.9.12",
         "leaflet": "^1.9.4"
     }
