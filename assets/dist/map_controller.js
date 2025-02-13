@@ -147,10 +147,13 @@ class map_controller extends default_1 {
         return map;
     }
     doCreateMarker({ definition }) {
-        const { '@id': _id, position, title, infoWindow, extra, rawOptions = {}, ...otherOptions } = definition;
+        const { '@id': _id, position, title, infoWindow, icon, extra, rawOptions = {}, ...otherOptions } = definition;
         const marker = L.marker(position, { title: title || undefined, ...otherOptions, ...rawOptions }).addTo(this.map);
         if (infoWindow) {
             this.createInfoWindow({ definition: infoWindow, element: marker });
+        }
+        if (icon) {
+            this.doCreateIcon({ definition: icon, element: marker });
         }
         return marker;
     }
@@ -196,6 +199,13 @@ class map_controller extends default_1 {
             throw new Error('Unable to get the Popup associated with the element.');
         }
         return popup;
+    }
+    doCreateIcon({ definition, element, }) {
+        const { content, type, width, height } = definition;
+        const icon = type === 'inline-svg'
+            ? L.divIcon({ html: content, iconSize: [width, height] })
+            : L.icon({ iconUrl: content, iconSize: [width, height] });
+        element.setIcon(icon);
     }
     doFitBoundsToMarkers() {
         if (this.markers.size === 0) {

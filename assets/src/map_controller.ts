@@ -1,5 +1,6 @@
 import AbstractMapController from '@symfony/ux-map';
 import type {
+    Icon,
     InfoWindowWithoutPositionDefinition,
     MarkerDefinition,
     Point,
@@ -89,7 +90,7 @@ export default class extends AbstractMapController<
     }
 
     protected doCreateMarker({ definition }: { definition: MarkerDefinition<MarkerOptions, PopupOptions> }): L.Marker {
-        const { '@id': _id, position, title, infoWindow, extra, rawOptions = {}, ...otherOptions } = definition;
+        const { '@id': _id, position, title, infoWindow, icon, extra, rawOptions = {}, ...otherOptions } = definition;
 
         const marker = L.marker(position, { title: title || undefined, ...otherOptions, ...rawOptions }).addTo(
             this.map
@@ -97,6 +98,10 @@ export default class extends AbstractMapController<
 
         if (infoWindow) {
             this.createInfoWindow({ definition: infoWindow, element: marker });
+        }
+
+        if (icon) {
+            this.doCreateIcon({ definition: icon, element: marker });
         }
 
         return marker;
@@ -171,6 +176,21 @@ export default class extends AbstractMapController<
         }
 
         return popup;
+    }
+
+    protected doCreateIcon({
+        definition,
+        element,
+    }: {
+        definition: Icon;
+        element: L.Marker;
+    }): void {
+        const { content, type, width, height } = definition;
+        const icon =
+            type === 'inline-svg'
+                ? L.divIcon({ html: content, iconSize: [width, height] })
+                : L.icon({ iconUrl: content, iconSize: [width, height] });
+        element.setIcon(icon);
     }
 
     protected doFitBoundsToMarkers(): void {
