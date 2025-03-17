@@ -31,7 +31,7 @@ class LeafletRendererTest extends RendererTestCase
             ->zoom(12);
 
         $marker1 = new Marker(position: new Point(48.8566, 2.3522), title: 'Paris', id: 'marker1');
-        $marker2 = new Marker(position: new Point(48.8566, 2.3522), title: 'Lyon', infoWindow: new InfoWindow(content: 'Lyon'), id: 'marker2', icon: Icon::fromInlineSVG(html: '<svg></svg>'));
+        $marker2 = new Marker(position: new Point(48.8566, 2.3522), title: 'Lyon', infoWindow: new InfoWindow(content: 'Lyon'), id: 'marker2', icon: Icon::svg(html: '<svg></svg>'));
         $marker3 = new Marker(position: new Point(45.8566, 2.3522), title: 'Dijon', id: 'marker3');
 
         yield 'simple map' => [
