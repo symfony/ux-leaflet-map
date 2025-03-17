@@ -1,4 +1,4 @@
-import AbstractMapController from '@symfony/ux-map';
+import AbstractMapController, { IconTypes } from '@symfony/ux-map';
 import type {
     Icon,
     InfoWindowWithoutPositionDefinition,
@@ -187,7 +187,7 @@ export default class extends AbstractMapController<
     }): void {
         const { content, type, width, height } = definition;
         const icon =
-            type === 'inline-svg'
+            type === IconTypes.InlineSvg
                 ? L.divIcon({ html: content, iconSize: [width, height] })
                 : L.icon({ iconUrl: content, iconSize: [width, height] });
         element.setIcon(icon);
