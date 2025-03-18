@@ -42,7 +42,7 @@ export default class extends AbstractMapController<
             iconSize: [25, 41],
             iconAnchor: [12.5, 41],
             popupAnchor: [0, -41],
-            className: '',
+            className: '', // Adding an empty class to the icon to avoid the default Leaflet styles
         });
 
         super.connect();
@@ -189,11 +189,23 @@ export default class extends AbstractMapController<
 
         let icon: L.DivIcon | L.Icon;
         if (type === IconTypes.Svg) {
-            icon = L.divIcon({ html: definition.html, iconSize: [width, height], className: '' });
+            icon = L.divIcon({
+                html: definition.html,
+                iconSize: [width, height],
+                className: '', // Adding an empty class to the icon to avoid the default Leaflet styles
+            });
         } else if (type === IconTypes.UxIcon) {
-            icon = L.divIcon({ html: definition._generated_html, iconSize: [width, height], className: '' });
+            icon = L.divIcon({
+                html: definition._generated_html,
+                iconSize: [width, height],
+                className: '', // Adding an empty class to the icon to avoid the default Leaflet styles
+            });
         } else if (type === IconTypes.Url) {
-            icon = L.icon({ iconUrl: definition.url, iconSize: [width, height], className: '' });
+            icon = L.icon({
+                iconUrl: definition.url,
+                iconSize: [width, height],
+                className: '', // Adding an empty class to the icon to avoid the default Leaflet styles
+            });
         } else {
             throw new Error(`Unsupported icon type: ${type}.`);
         }
