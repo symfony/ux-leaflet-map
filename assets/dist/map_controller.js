@@ -4,7 +4,7 @@ import * as L from 'leaflet';
 
 const IconTypes = {
     Url: 'url',
-    InlineSvg: 'inline-svg',
+    Svg: 'svg',
     UxIcon: 'ux-icon',
 };
 class default_1 extends Controller {
@@ -206,10 +206,20 @@ class map_controller extends default_1 {
         return popup;
     }
     doCreateIcon({ definition, element, }) {
-        const { content, type, width, height } = definition;
-        const icon = type === IconTypes.InlineSvg
-            ? L.divIcon({ html: content, iconSize: [width, height] })
-            : L.icon({ iconUrl: content, iconSize: [width, height] });
+        const { type, width, height } = definition;
+        let icon;
+        if (type === IconTypes.Svg) {
+            icon = L.divIcon({ html: definition.html, iconSize: [width, height], className: '' });
+        }
+        else if (type === IconTypes.UxIcon) {
+            icon = L.divIcon({ html: definition._generated_html, iconSize: [width, height], className: '' });
+        }
+        else if (type === IconTypes.Url) {
+            icon = L.icon({ iconUrl: definition.url, iconSize: [width, height], className: '' });
+        }
+        else {
+            throw new Error(`Unsupported icon type: ${type}.`);
+        }
         element.setIcon(icon);
     }
     doFitBoundsToMarkers() {
