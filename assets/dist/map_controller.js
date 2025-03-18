@@ -209,13 +209,25 @@ class map_controller extends default_1 {
         const { type, width, height } = definition;
         let icon;
         if (type === IconTypes.Svg) {
-            icon = L.divIcon({ html: definition.html, iconSize: [width, height], className: '' });
+            icon = L.divIcon({
+                html: definition.html,
+                iconSize: [width, height],
+                className: '',
+            });
         }
         else if (type === IconTypes.UxIcon) {
-            icon = L.divIcon({ html: definition._generated_html, iconSize: [width, height], className: '' });
+            icon = L.divIcon({
+                html: definition._generated_html,
+                iconSize: [width, height],
+                className: '',
+            });
         }
         else if (type === IconTypes.Url) {
-            icon = L.icon({ iconUrl: definition.url, iconSize: [width, height], className: '' });
+            icon = L.icon({
+                iconUrl: definition.url,
+                iconSize: [width, height],
+                className: '',
+            });
         }
         else {
             throw new Error(`Unsupported icon type: ${type}.`);

@@ -21,7 +21,8 @@
         "symfony/ux-map": "^2.19"
     },
     "require-dev": {
-        "symfony/phpunit-bridge": "^6.4|^7.0"
+        "symfony/phpunit-bridge": "^6.4|^7.0",
+        "symfony/ux-icons": "^2.18"
     },
     "autoload": {
         "psr-4": { "Symfony\\UX\\Map\\Bridge\\Leaflet\\": "src/" },
