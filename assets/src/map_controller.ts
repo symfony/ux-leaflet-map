@@ -185,11 +185,18 @@ export default class extends AbstractMapController<
         definition: Icon;
         element: L.Marker;
     }): void {
-        const { content, type, width, height } = definition;
-        const icon =
-            type === IconTypes.InlineSvg
-                ? L.divIcon({ html: content, iconSize: [width, height] })
-                : L.icon({ iconUrl: content, iconSize: [width, height] });
+        const { type, width, height } = definition;
+
+        let icon: L.DivIcon | L.Icon;
+        if (type === IconTypes.Svg) {
+            icon = L.divIcon({ html: definition.html, iconSize: [width, height], className: '' });
+        } else if (type === IconTypes.UxIcon) {
+            icon = L.divIcon({ html: definition._generated_html, iconSize: [width, height], className: '' });
+        } else if (type === IconTypes.Url) {
+            icon = L.icon({ iconUrl: definition.url, iconSize: [width, height], className: '' });
+        } else {
+            throw new Error(`Unsupported icon type: ${type}.`);
+        }
         element.setIcon(icon);
     }
 
