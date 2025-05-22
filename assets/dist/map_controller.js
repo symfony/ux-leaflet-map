@@ -45,7 +45,7 @@ class default_1 extends Controller {
     createInfoWindow({ definition, element, }) {
         this.dispatchEvent('info-window:before-create', { definition, element });
         const infoWindow = this.doCreateInfoWindow({ definition, element });
-        this.dispatchEvent('info-window:after-create', { infoWindow, element });
+        this.dispatchEvent('info-window:after-create', { infoWindow, definition, element });
         this.infoWindows.push(infoWindow);
         return infoWindow;
     }
@@ -76,7 +76,7 @@ class default_1 extends Controller {
         return ({ definition }) => {
             this.dispatchEvent(eventBefore, { definition });
             const drawing = factory({ definition });
-            this.dispatchEvent(eventAfter, { [type]: drawing });
+            this.dispatchEvent(eventAfter, { [type]: drawing, definition });
             draws.set(definition['@id'], drawing);
             return drawing;
         };
